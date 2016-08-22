@@ -114,11 +114,11 @@ do_update() {
 case $1 in
 s|sorting)
 	[ ! -e $LISTFILE ] && do_update
-	#do_list_all
+	#
 	;;
 u|update)
 	do_update
-	do_list
+	#
 	;;
 *)
 	helpexit
