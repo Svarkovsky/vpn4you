@@ -7,10 +7,8 @@ vpn4you - an automated creaking selects and then connect to the fastest at any g
 vpn4you - это автоматизированный скрип осуществляющий отбор и последующее подключение \
 к самым быстрым на данный момент времени серверам vpngate.
 
-
 apt-get install git openvpn 
 git clone https://github.com/Svarkovsky/vpn4you.git
-
 
 ####################################################
 #   vpn4you                                 2017
