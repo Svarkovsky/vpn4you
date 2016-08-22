@@ -1,5 +1,6 @@
 # 
-[EN]
+```bash
+[EN] 
 vpn4you - an automated creaking selects and then connect to the fastest at any given time servers vpngate.
 
 [RU]
@@ -28,3 +29,4 @@ Any help would be useful.
 
 [RU]
 Любая помощь будет полезна. 
+```
