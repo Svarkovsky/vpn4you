@@ -20,14 +20,7 @@ BTC="12WFM3nJHmAHraiLhXn5Qw51fkNBweSKjR"
 ####################################################
 
 help
-	usage: ./vpn4you.sh [-h] 
-	actions:
-	    [u] u[pdate]
-	    [s] s[orting]
-	update   : download and convert files in *.ovpn 
-	sorting  : determine the fastest nodes
-
-Example: ./vpn4you.sh u  
+	./vpn4you.sh [-h] 
 
 ####################################################
 [EN]
