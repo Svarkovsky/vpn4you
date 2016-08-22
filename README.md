@@ -1,7 +1,8 @@
 # 
 ```bash
 
-vpn4you - скрип осуществляющий отбор и последующее подключение к самым быстрым на данный момент времени серверам vpngate.
+vpn4you - скрип осуществляющий отбор и последующее подключение к самым быстрым на данный 
+момент времени серверам vpngate.
 
 apt-get install git openvpn 
 git clone https://github.com/Svarkovsky/vpn4you.git
