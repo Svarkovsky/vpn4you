@@ -4,8 +4,12 @@
 vpn4you - скрипт осуществляющий отбор и последующее подключение к самым быстрым на 
             данный момент времени серверам vpngate.
 
-apt-get install git openvpn 
+
 git clone https://github.com/Svarkovsky/vpn4you.git
+или так 
+wget https://github.com/Svarkovsky/vpn4you/archive/master.zip && unzip master.zip && cd vpn4you-master
+
+apt-get install openvpn 
 
 ####################################################
 #   vpn4you                                 2017
