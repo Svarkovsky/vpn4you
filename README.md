@@ -9,6 +9,8 @@ git clone https://github.com/Svarkovsky/vpn4you.git
 или так 
 wget https://github.com/Svarkovsky/vpn4you/archive/master.zip && unzip master.zip && cd vpn4you-master
 
+chmod +x vpn4you.sh
+
 apt-get install openvpn 
 
 ####################################################
