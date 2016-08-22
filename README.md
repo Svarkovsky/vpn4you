@@ -1,9 +1,6 @@
 # 
 ```bash
-[EN] 
-vpn4you - an automated creaking selects and then connect to the fastest at any given time servers vpngate.
 
-[RU]
 vpn4you - это автоматизированный скрип осуществляющий отбор и последующее подключение \
 к самым быстрым на данный момент времени серверам vpngate.
 
@@ -28,9 +25,6 @@ help
 
 Example: ./vpn4you.sh u  
 ####################################################
-[EN]
-Any help would be useful.
 
-[RU]
 Любая помощь будет полезна. 
 ```
