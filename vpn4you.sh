@@ -3,8 +3,8 @@
 ####################################################
 #   vpn4you                                 2017
 ####################################################
-ver="0.14"
-author="sin-ok"   #    ivansvarkovsky@gmail.com         sin-ok@xmpp.jp
+ver="0.15"
+author="@sin-ok"   #                  sin-ok@xmpp.jp
 BTC="12WFM3nJHmAHraiLhXn5Qw51fkNBweSKjR"
 name="vpn4you"
 ####################################################
@@ -54,11 +54,11 @@ echo -e ${bl}"                                                           ."${n}"
 	sleep 0.05 && echo -e ${y}"   \ *-._|\_/|_.-' /   "${g}"                    "              ${bl}"         ."   ${n}""
 	sleep 0.05 && echo -e ${y}"    |   =)'T'(=   |    "${g}"                    "
 	sleep 0.05 && echo -e ${y}"     \   /*'*\   /     "${n}"        script "${g}" ⓥ $ver "                         ${n}""
-	sleep 0.05 && echo -e ${y}"      '._\) (/_.'      "${n}"     developer "${g}" $author   "                      ${n}""
-	sleep 0.05 && echo -e ${y}"          | |          "${n}"                    "
+	sleep 0.05 && echo -e ${y}"      '._\) (/_.'      "${n}"       "${g}"   "                                     ${n}""
+	sleep 0.05 && echo -e ${y}"          | |          "${n}"          "${g}" $author   "                          ${n}"          "
 	sleep 0.05 && echo -e ${y}"         /\ /\         "${g}"                    "${n}"*"
 	sleep 0.05 && echo -e ${y}"         \ T /         "${g}"        "${n}" *    "                 
-	sleep 0.05 && echo -e ${y}"         (/ \)\        "${g}"  "${n}" .          "${n}" ivansvarkovsky@gmail.com"    
+	sleep 0.05 && echo -e ${y}"         (/ \)\        "${g}"  "${n}" .          "${n}" "    
 	sleep 0.05 && echo -e ${y}"              ))       "${g}"                    "${n}"sin-ok@xmpp.jp"
 	sleep 0.05 && echo -e ${y}"             ((        "${g}"Donate:  "                                             ${n}""
 	sleep 0.05 && echo -e ${y}"              \)       "${g}"BTC "${n}" $BTC "                                   
@@ -127,104 +127,77 @@ esac
 clear
 cd /$LIST
 lsf="`find . -type f | wc -l`"    # количество файлов 
-echo -e ${n}"┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━"${g}"  work  "${n}"━━━━━━━━━━━━━━━━━"${n}"━━◊  $lsf"  ${g}" ◊"${n}"┓"
-####################################################
-# Обработка list
-####################################################
-lsip=$(ls *[0-9]* | cut -c 9- | cut -c -16 | sed -e 's/\_//g' | sed -e 's/\-//g' | tr 'a-z' ' ' | tr 'A-Z' ' ' | grep -v "^$"  | grep -v "^$" | sort -n | uniq)
-####################################################
-REZ="/tmp/$(basename $0).REZ.$$.tmp"                         # сюда живых и относительно шустрых
-uh="/tmp/$(basename $0).uh.$$.tmp"                        # будем держать 
-COUNT=3                    # Количество пингов
-mmax=150                # 100 ms потолок
-mmaxslow=220          # предел  "проходной балл"
-z=0
-#
+echo -e ${n}"┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"${g}"  work  "${n}"━━━━━━━━━━━━━━━━━"${n}"━━◊  $lsf"  ${g}" ◊"${n}"┓"
 echo ""
-for mhost in $lsip
- do
-# теперь пингаем ищем возвращенные пакеты и дергаем поле с числом
-   count=$(ping -c $COUNT $mhost | grep 'received' | awk -F',' '{ print $2 }' | awk '{ print $1 }')
-# ms среднее значение          -                               c awk округляем до целых
- #  ms=$(ping -c $COUNT -b $mhost | grep rtt | cut -d"/" -f5 | awk '{ split($0, n, "."); print n[1] + (substr(n[2], 1, 1) >= 5 ? 1 : 0) }')
-   ms=$(ping -c $COUNT -b $mhost | grep rtt | cut -d"/" -f5 | awk '{ split($0, n, "."); print n[1] + (substr(n[2], 1, 1) >= 5 ? 1 : 0) }' | bc -l)
-#   
-if [ "$z" = "$count" ]
-then
-    echo -e "                   $mhost -"${n}" unknown host" ${n}" "                
-   echo "$mhost" >> "$uh"
-elif [ "$ms" -gt "$mmaxslow" ]
- then
-  echo -e "                                  $mhost ($ms ms) -"${p}" slow" ${n}" "  
-          echo "$mhost" >> "$uh"     
-elif [ "$ms" -gt "$mmax" ]
- then
-  echo -e "                                  $mhost ($ms ms) -"${p}" slow" ${n}" "   
-  else 
-     echo "$ms $mhost" >> "$REZ" 
-  echo -e "   $mhost ($ms ms) is"${g}" up " ${n}" "  
-  fi
- done  
-echo ""
-echo -e ${n}"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛" 
-####################################################
-# Удаляем дохлые хосты
-####################################################
-while read lineuh           
-do           
-   find -type f -name "vpngate_"$lineuh"*" -exec rm -f {} \;   #    вот так вот  0_o^ 
-done < "$uh"  
-clear  
+REZ="/tmp/$(basename $0).REZ.$$.tmp" 
+REZzz="/tmp/$(basename $0).REZzz.$$.tmp"                
+ls -l *[0-9]* | cut -c 45- > "$REZzz" 
+IP=$(curl -s icanhazip.com)   
+S=10
+L=200
 
-# Проверяем существет ли файл /tmp/$(basename $0).uh.*  и если существует удалим
-if [ -e "$uh" ]
-then
-     rm /tmp/$(basename $0).uh.*
+while read lineREZzz  
+do   
+   while [ "$(pidof openvpn > /dev/null; echo $?)" -eq 0 ]; do kill `pidof openvpn` >/dev/null 2>/dev/null; done
+  
+     if [ "$(curl -s icanhazip.com)" = "$IP" ] # если подключения через VPN нет, тогда IP = IP 
+         then                   
+            echo -e "   Verification" "$lineREZzz"    
+                  /usr/sbin/openvpn --config "$lineREZzz" --daemon
+          sleep "$S"                                            # 10c достаточно, должен подключится ~5c
+       if [ "$(curl -s icanhazip.com)" != "$IP" ] 
+           then  
+              echo -e ${g}"        Successful response"${n}" "
+               ms=$[`ping -c 3 -b 8.8.8.8 | grep rtt | cut -d"/" -f5 | cut -d"." -f1 `]
+          if [ "$ms" -lt "$L" ] && [ "$ms" -ne 0 ]
+              then 
+   #              echo  "$ms" 
+                  echo "$lineREZzz" "$ms" >>"$REZ"    
+   else
+      find "$lineREZzz" -delete
+          echo -e ${p}"             bad" ${n}"                 delete profile"
+    fi
+   fi
   fi
+done  < "$REZzz" 
+
+  while [ "$(pidof openvpn > /dev/null; echo $?)" -eq 0 ]; do kill `pidof openvpn` >/dev/null 2>/dev/null; done
+
+echo ""
+echo -e ${n}"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛" 
 ####################################################
-REZn=$(cat "$REZ" | grep -v "^$" | sort -n | uniq | sed 8q)       # (sed 8q)  берем только первые 8 строк 
+REZn=$(cat "$REZ" | sort -t" " -k2 -n | uniq)        
 find /tmp -name ip_up.log -type f -exec rm {} \; 
 echo "$REZn" > /tmp/ip_up.log
 clear
 ####################################################
-# Чтение построчно из итогового файла
-####################################################    cut -d" " -f1 обрезать до первого пробела
-# обработка первого куска строки с ms
-line1ms="$(sed -n -e 1p /tmp/ip_up.log | cut -d" " -f1)"
-line2ms="$(sed -n -e 2p /tmp/ip_up.log | cut -d" " -f1)"
-line3ms="$(sed -n -e 3p /tmp/ip_up.log | cut -d" " -f1)"
-line4ms="$(sed -n -e 4p /tmp/ip_up.log | cut -d" " -f1)"
-line5ms="$(sed -n -e 5p /tmp/ip_up.log | cut -d" " -f1)"
-line6ms="$(sed -n -e 6p /tmp/ip_up.log | cut -d" " -f1)"
-line7ms="$(sed -n -e 7p /tmp/ip_up.log | cut -d" " -f1)"
-line8ms="$(sed -n -e 8p /tmp/ip_up.log | cut -d" " -f1)"
-# обработка второго куска строки с ip  # Так тоже можно:  cat ip_up.txt | awk '{print $2}' | tr '(' ' ' | sort -n | sed -e 's/\ //g'
-line1ip="$(sed -n -e 1p /tmp/ip_up.log | cut -d" " -f2 | sed -e '1,$ s/.*(/ /g' | sed -e 's/\ //g')"
-line2ip="$(sed -n -e 2p /tmp/ip_up.log | cut -d" " -f2 | sed -e '1,$ s/.*(/ /g' | sed -e 's/\ //g')"
-line3ip="$(sed -n -e 3p /tmp/ip_up.log | cut -d" " -f2 | sed -e '1,$ s/.*(/ /g' | sed -e 's/\ //g')"
-line4ip="$(sed -n -e 4p /tmp/ip_up.log | cut -d" " -f2 | sed -e '1,$ s/.*(/ /g' | sed -e 's/\ //g')"
-line5ip="$(sed -n -e 5p /tmp/ip_up.log | cut -d" " -f2 | sed -e '1,$ s/.*(/ /g' | sed -e 's/\ //g')"
-line6ip="$(sed -n -e 6p /tmp/ip_up.log | cut -d" " -f2 | sed -e '1,$ s/.*(/ /g' | sed -e 's/\ //g')"
-line7ip="$(sed -n -e 7p /tmp/ip_up.log | cut -d" " -f2 | sed -e '1,$ s/.*(/ /g' | sed -e 's/\ //g')"
-line8ip="$(sed -n -e 8p /tmp/ip_up.log | cut -d" " -f2 | sed -e '1,$ s/.*(/ /g' | sed -e 's/\ //g')"
+# Поиск соответствий 
 ####################################################
-# Поиск соответствия по каталогу 
-####################################################
-l1="$(find -type f -exec echo {} \; | grep *$line1ip* | cut -c 3-)"
-l2="$(find -type f -exec echo {} \; | grep *$line2ip* | cut -c 3-)"
-l3="$(find -type f -exec echo {} \; | grep *$line3ip* | cut -c 3-)"
-l4="$(find -type f -exec echo {} \; | grep *$line4ip* | cut -c 3-)"
-l5="$(find -type f -exec echo {} \; | grep *$line5ip* | cut -c 3-)"
-l6="$(find -type f -exec echo {} \; | grep *$line6ip* | cut -c 3-)"        # l6="$(find *$line6ip*)"  
-l7="$(find -type f -exec echo {} \; | grep *$line7ip* | cut -c 3-)"
-l8="$(find -type f -exec echo {} \; | grep *$line8ip* | cut -c 3-)"    
+l1=`sed -n -e 1p /tmp/ip_up.log | cut -d" " -f1`
+line1ip=`sed -n -e 1p /tmp/ip_up.log | cut -d" " -f1 | cut -c 9- | sed -e 's/\_//g' | tr 'a-z' ' ' | tr 'A-Z' ' ' | cut -c -16`
+line1ms=`sed -n -e 1p /tmp/ip_up.log | cut -d" " -f2`
+l2=`sed -n -e 2p /tmp/ip_up.log | cut -d" " -f1`
+line2ip=`sed -n -e 2p /tmp/ip_up.log | cut -d" " -f1 | cut -c 9- | sed -e 's/\_//g' | tr 'a-z' ' ' | tr 'A-Z' ' ' | cut -c -16`
+line2ms=`sed -n -e 2p /tmp/ip_up.log | cut -d" " -f2`
+l3=`sed -n -e 3p /tmp/ip_up.log | cut -d" " -f1`
+line3ip=`sed -n -e 3p /tmp/ip_up.log | cut -d" " -f1 | cut -c 9- | sed -e 's/\_//g' | tr 'a-z' ' ' | tr 'A-Z' ' ' | cut -c -16`
+line3ms=`sed -n -e 3p /tmp/ip_up.log | cut -d" " -f2`
+l4=`sed -n -e 4p /tmp/ip_up.log | cut -d" " -f1`
+line4ip=`sed -n -e 4p /tmp/ip_up.log | cut -d" " -f1 | cut -c 9- | sed -e 's/\_//g' | tr 'a-z' ' ' | tr 'A-Z' ' ' | cut -c -16`
+line4ms=`sed -n -e 4p /tmp/ip_up.log | cut -d" " -f2`
+l5=`sed -n -e 5p /tmp/ip_up.log | cut -d" " -f1`
+line5ip=`sed -n -e 5p /tmp/ip_up.log | cut -d" " -f1 | cut -c 9- | sed -e 's/\_//g' | tr 'a-z' ' ' | tr 'A-Z' ' ' | cut -c -16`
+line5ms=`sed -n -e 5p /tmp/ip_up.log | cut -d" " -f2`
+l6=`sed -n -e 6p /tmp/ip_up.log | cut -d" " -f1`
+line6ip=`sed -n -e 6p /tmp/ip_up.log | cut -d" " -f1 | cut -c 9- | sed -e 's/\_//g' | tr 'a-z' ' ' | tr 'A-Z' ' ' | cut -c -16`
+line6ms=`sed -n -e 6p /tmp/ip_up.log | cut -d" " -f2`
+l7=`sed -n -e 7p /tmp/ip_up.log | cut -d" " -f1`
+line7ip=`sed -n -e 7p /tmp/ip_up.log | cut -d" " -f1 | cut -c 9- | sed -e 's/\_//g' | tr 'a-z' ' ' | tr 'A-Z' ' ' | cut -c -16`
+line7ms=`sed -n -e 7p /tmp/ip_up.log | cut -d" " -f2`
+l8=`sed -n -e 8p /tmp/ip_up.log | cut -d" " -f1`
+line8ip=`sed -n -e 8p /tmp/ip_up.log | cut -d" " -f1 | cut -c 9- | sed -e 's/\_//g' | tr 'a-z' ' ' | tr 'A-Z' ' ' | cut -c -16`
+line8ms=`sed -n -e 8p /tmp/ip_up.log | cut -d" " -f2`
 #################################################### 
-# Итоговое меню с выбором 
-###
-# Создаем функции
-####################################################
-
-####################################################
 # Функции действий
 ####################################################
 function "$l1" {
@@ -264,30 +237,30 @@ function menu {
 clear
 echo -e "\t\t\t\t\t\t\t\t      \n"                   
 echo -e ${n}"     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
-sleep 0.05 && echo -e "\t1." ${g}"$line1ip    $line1ms ms   "${n}"" 
-sleep 0.05 && echo -e ${n}"           $l1 "                                                      
-sleep 0.05 && echo -e "\t2." ${g}"$line2ip    $line2ms ms   "${n}"" 
-sleep 0.05 && echo -e ${n}"           $l2 "                                                  
-sleep 0.05 && echo -e "\t3." ${g}"$line3ip    $line3ms ms   "${n}"" 
-sleep 0.05 && echo -e ${n}"           $l3 "                                                 
-sleep 0.05 && echo -e "\t4." ${y}"$line4ip    $line4ms ms   "${n}""
-sleep 0.05 && echo -e ${n}"           $l4 "                                                  
-sleep 0.05 && echo -e "\t5." ${y}"$line5ip    $line5ms ms   "${n}""
-sleep 0.05 && echo -e ${n}"           $l5 "                                                
-sleep 0.05 && echo -e "\t6." ${y}"$line6ip    $line6ms ms   "${n}""
-sleep 0.05 && echo -e ${n}"           $l6 "                                                
-sleep 0.05 && echo -e "\t7." ${y}"$line7ip    $line7ms ms   "${n}""
-sleep 0.05 && echo -e ${n}"           $l7 "                                                
-sleep 0.05 && echo -e "\t8." ${y}"$line8ip    $line8ms ms   "${n}""
-sleep 0.05 && echo -e ${n}"           $l8 "                                                
+sleep 0.05s && echo -e "\t1." ${g}"$line1ip    $line1ms ms   "${n}"" 
+sleep 0.05s && echo -e ${n}"           $l1 "                                                      
+sleep 0.05s && echo -e "\t2." ${g}"$line2ip    $line2ms ms   "${n}"" 
+sleep 0.05s && echo -e ${n}"           $l2 "                                                  
+sleep 0.05s && echo -e "\t3." ${g}"$line3ip    $line3ms ms   "${n}"" 
+sleep 0.05s && echo -e ${n}"           $l3 "                                                 
+sleep 0.05s && echo -e "\t4." ${y}"$line4ip    $line4ms ms   "${n}""
+sleep 0.05s && echo -e ${n}"           $l4 "                                                  
+sleep 0.05s && echo -e "\t5." ${y}"$line5ip    $line5ms ms   "${n}""
+sleep 0.05s && echo -e ${n}"           $l5 "                                                
+sleep 0.05s && echo -e "\t6." ${y}"$line6ip    $line6ms ms   "${n}""
+sleep 0.05s && echo -e ${n}"           $l6 "                                                
+sleep 0.05s && echo -e "\t7." ${y}"$line7ip    $line7ms ms   "${n}""
+sleep 0.05s && echo -e ${n}"           $l7 "                                                
+sleep 0.05s && echo -e "\t8." ${y}"$line8ip    $line8ms ms   "${n}""
+sleep 0.05s && echo -e ${n}"           $l8 "                                                
 echo -e ${n}"     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"${g}"◊"${n}"━┛"   
- sleep 0.5 
+ sleep 0.3s 
 echo ""
 echo -e "\t0.            Exit"
 echo -en "\t\tMake a choice: "
 read -n 1 option
 }
-# Используем цикл While и команду Case для создания меню.
+# Используем цикл While и команду Case для меню.
 while [ $? -ne 1 ]
 do
         menu
@@ -325,10 +298,13 @@ clear
 ####################################################         
 # Удаляем временные файлы
 ####################################################
-# Проверяем существет ли файл /tmp/$(basename $0).REZ.* и если существует удалим
 if [ -e "$REZ" ]
-then
+ then
      rm /tmp/$(basename $0).REZ.*
+     if [ -e "$REZzz" ]
+        then
+       rm /tmp/$(basename $0).REZzz.*
+     fi
   fi
 ####################################################
 # Выход
