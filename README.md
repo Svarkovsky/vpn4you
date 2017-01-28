@@ -2,7 +2,7 @@
 ```bash
 
 vpn4you - скрипт осуществляющий отбор и последующее подключение к самым быстрым на 
-            данный момент времени серверам vpngate.
+            данный момент времени серверам vpngate
 
 
 git clone https://github.com/Svarkovsky/vpn4you.git
@@ -16,8 +16,8 @@ apt-get install openvpn
 ####################################################
 #   vpn4you                                 2017
 ####################################################
-author="sin-ok"
-ivansvarkovsky@gmail.com         
+author="@sin-ok"
+ivansvarkovskymail.com         
 sin-ok@xmpp.jp
 BTC="12WFM3nJHmAHraiLhXn5Qw51fkNBweSKjR"
 ####################################################
