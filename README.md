@@ -17,7 +17,7 @@ apt-get install openvpn
 #   vpn4you                                 2017
 ####################################################
 author="@sin-ok"
-ivansvarkovskymail.com         
+ 
 sin-ok@xmpp.jp
 BTC="12WFM3nJHmAHraiLhXn5Qw51fkNBweSKjR"
 ####################################################
